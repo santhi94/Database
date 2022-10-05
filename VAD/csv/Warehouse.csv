@@ -1,0 +1,5 @@
+warehouse_id,warehouse_name,warehouse_address
+WRH1,North Warehouse,North Side
+WRH2,South Warehouse,South Side
+WRH3,East Warehouse,East Side
+WRH4,West Warehouse,West Side

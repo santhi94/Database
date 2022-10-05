@@ -1,0 +1,227 @@
+import psycopg2
+
+
+def create_customer():
+    # The try block lets you test a block of code for errors.
+    try:
+        con = psycopg2.connect(dbname='electric hull', host='localhost', port='5432', user='postgres',
+                               password='20021992')
+
+        # Establish a connection to the database by creating a cursor object
+        # Allows Python code to execute PostgreSQL command in a database session.
+        # Cursors are created by the connection.cursor() method: they are bound to the connection
+        # for the entire lifetime and all the commands are executed in the context of the database
+        # session wrapped by the connection.
+        cur = con.cursor()
+
+        customer_id = input("Enter your ID:")
+
+        customer_name = input("Enter your Name:")
+
+        customer_surname = input("Enter your Surname:")
+
+        address = input("Enter your Address:")
+
+        zip_code = input("Enter your Zip Code:")
+
+        phone = input("Enter your Phone:")
+
+        email = input("Enter your Email:")
+
+        country_id = input("Enter your Country:")
+
+        # The execute routine executes an SQL statement.
+        cur.execute(
+            """INSERT INTO public.customer (customer_id,customer_name,customer_surname,address,zip_code,phone,email,country_id) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)""",
+            (customer_id, customer_name, customer_surname, address, zip_code, phone, email, country_id))
+        con.commit()
+
+
+    # The except block lets you handle the error.
+    except(Exception, psycopg2.Error) as error:
+        print("Error while fetching data from PostgreSQL", error)
+
+    # The finally block lets you execute code, regardless of the result of the try- and except blocks.
+    finally:
+        if (con):
+            cur.close()
+            con.close()
+            print("PostgreSQL connection is closed\n")
+
+
+def create_order():
+    # The try block lets you test a block of code for errors.
+    try:
+        con = psycopg2.connect(dbname='electric hull', host='localhost', port='5432', user='postgres',
+                               password='20021992')
+
+        # Establish a connection to the database by creating a cursor object
+        # Allows Python code to execute PostgreSQL command in a database session.
+        # Cursors are created by the connection.cursor() method: they are bound to the connection
+        # for the entire lifetime and all the commands are executed in the context of the database
+        # session wrapped by the connection.
+        cur = con.cursor()
+
+        order_id = input("Enter an order ID:")
+
+        customer_id = input("Enter your customer ID:")
+
+        delivery_method_id = input("Enter the delivery method:")
+
+        employee_id = input("Enter the employee id:")
+
+        order_date = input("Enter the date:")
+
+        # The execute routine executes an SQL statement.
+        cur.execute(
+            """INSERT INTO public.orders (order_id,customer_id,delivery_method_id,employee_id,order_date) VALUES(%s,%s,%s,%s,%s)""",
+            (order_id, customer_id, delivery_method_id, employee_id, order_date))
+        con.commit()
+
+
+    # The except block lets you handle the error.
+    except(Exception, psycopg2.Error) as error:
+        print("Error while fetching data from PostgreSQL", error)
+
+    # The finally block lets you execute code, regardless of the result of the try- and except blocks.
+    finally:
+        if (con):
+            cur.close()
+            con.close()
+            print("PostgreSQL connection is closed\n")
+
+
+def create_order_detail():
+    # The try block lets you test a block of code for errors.
+    try:
+        con = psycopg2.connect(dbname='electric hull', host='localhost', port='5432', user='postgres',
+                               password='20021992')
+
+        # Establish a connection to the database by creating a cursor object
+        # Allows Python code to execute PostgreSQL command in a database session.
+        # Cursors are created by the connection.cursor() method: they are bound to the connection
+        # for the entire lifetime and all the commands are executed in the context of the database
+        # session wrapped by the connection.
+        cur = con.cursor()
+
+        order_line = input("Enter the order line:")
+
+        order_id = input("Enter the order ID:")
+
+        product_id = input("Enter the product ID:")
+
+        quantity = input("Enter the quantity:")
+
+        # The execute routine executes an SQL statement.
+        cur.execute(
+            """INSERT INTO public.order_details (order_line,order_id,product_id,quantity) VALUES(%s,%s,%s,%s)""",
+            (order_line, order_id, product_id, quantity))
+        cur.execute(
+            """update orders set total_cost = tmpcost FROM (select TMP.order_id as tmpid,sum(TMP.product_cost) as tmpcost FROM(select OD.order_id,OD.quantity,PR.product_price,OD.quantity*PR.product_price as product_cost FROM order_details as OD left join product as PR on OD.product_id=PR.product_id) as TMP GROUP BY TMP.order_id )  TMP1 where order_id = tmpid;""")
+        con.commit()
+
+
+    # The except block lets you handle the error.
+    except(Exception, psycopg2.Error) as error:
+        print("Error while fetching data from PostgreSQL", error)
+
+    # The finally block lets you execute code, regardless of the result of the try- and except blocks.
+    finally:
+        if (con):
+            cur.close()
+            con.close()
+            print("PostgreSQL connection is closed\n")
+
+
+def get_products():
+    # The try block lets you test a block of code for errors.
+    try:
+        con = psycopg2.connect(dbname='electric hull', host='localhost', port='5432', user='postgres',
+                               password='20021992')
+
+        # Establish a connection to the database by creating a cursor object
+        # Allows Python code to execute PostgreSQL command in a database session.
+        # Cursors are created by the connection.cursor() method: they are bound to the connection
+        # for the entire lifetime and all the commands are executed in the context of the database
+        # session wrapped by the connection.
+        cur = con.cursor()
+
+        # The execute routine executes an SQL statement.
+
+        cur.execute("""SELECT * FROM public.product""")
+        records = cur.fetchall()
+
+        for row in records:
+            print("product_id = ", row[0])
+            print("product_name = ", row[1])
+            print("stock_per_product = ", row[2])
+            print("product_price = ", row[3], '\n')
+
+
+
+    # The except block lets you handle the error.
+    except(Exception, psycopg2.Error) as error:
+        print("Error while fetching data from PostgreSQL", error)
+
+    # The finally block lets you execute code, regardless of the result of the try- and except blocks.
+    finally:
+        if (con):
+            cur.close()
+            con.close()
+            print("PostgreSQL connection is closed\n")
+
+
+def get_orders():
+    # The try block lets you test a block of code for errors.
+    try:
+        con = psycopg2.connect(dbname='electric hull', host='localhost', port='5432', user='postgres',
+                               password='20021992')
+
+        # Establish a connection to the database by creating a cursor object
+        # Allows Python code to execute PostgreSQL command in a database session.
+        # Cursors are created by the connection.cursor() method: they are bound to the connection
+        # for the entire lifetime and all the commands are executed in the context of the database
+        # session wrapped by the connection.
+        cur = con.cursor()
+
+        # The execute routine executes an SQL statement.
+
+        customer_id = input("Enter your customer ID:")
+
+        cur.execute("""SELECT * FROM public.orders WHERE orders.customer_id=%s""", customer_id)
+        records = cur.fetchall()
+
+        for row in records:
+            print("order_id = ", row[0])
+            print("customer_id = ", row[1])
+            print("delivery_method_id = ", row[2])
+            print("employee_id = ", row[3])
+            print("order_date = ", row[4])
+            print("total_cost = ", row[5], '\n')
+
+        cur.execute("""SELECT * FROM public.order_details WHERE order_details.order_id=%s""", row[0])
+        records = cur.fetchall()
+        for row in records:
+            print("order_line = ", row[0])
+            print("order_id = ", row[1])
+            print("product_id = ", row[2])
+            print("quantity = ", row[3], '\n')
+
+
+
+    # The except block lets you handle the error.
+    except(Exception, psycopg2.Error) as error:
+        print("Error while fetching data from PostgreSQL", error)
+
+    # The finally block lets you execute code, regardless of the result of the try- and except blocks.
+    finally:
+        if (con):
+            cur.close()
+            con.close()
+            print("PostgreSQL connection is closed\n")
+
+# create_customer()
+# get_orders()
+# create_order()
+# create_order_detail()
+# get_products()

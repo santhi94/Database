@@ -1,0 +1,93 @@
+CREATE TABLE country(
+	country_id char(3) NOT NULL, 
+	country_name varchar(20) NOT NULL, 
+	currency varchar(5)  NOT NULL, 
+	PRIMARY KEY (country_id));
+
+CREATE TABLE customer (
+	customer_id varchar(6) NOT NULL, 
+	customer_name varchar(40) NOT NULL, 
+	customer_surname varchar(40) NOT NULL, 
+	address varchar(80) NOT NULL, 
+	zip_code varchar(30) NOT NULL, 
+	phone varchar(30) NOT NULL, 
+	email varchar(50), 
+	country_id char(3) NOT NULL, 
+	PRIMARY KEY (customer_id),
+    FOREIGN KEY (country_id) references country(country_id) on delete set null
+	);
+	
+CREATE TABLE employee(
+	employee_id char(4) NOT NULL, 
+	employee_name varchar(30), 
+	employee_surname varchar(30) NOT NULL, 
+	PRIMARY KEY (employee_id));
+	
+CREATE TABLE delivery_Method (
+	delivery_method_id char(4) NOT NULL, 
+	description varchar(10) NOT NULL, 
+	delivery_day int NOT NULL, 
+	delivery_cost int NOT NULL, 
+	PRIMARY KEY (delivery_method_id));
+
+CREATE TABLE orders(
+	order_id varchar(7) NOT NULL,
+    customer_id varchar(7) NOT NULL,
+    delivery_method_id char(4) NOT NULL,
+    employee_id char(4)	,
+	order_date date NOT NULL, 
+	total_cost float , 
+	PRIMARY KEY (order_id),
+	FOREIGN KEY (delivery_method_id) references delivery_Method on delete set null,
+	FOREIGN KEY (customer_id) references customer on delete set null
+	);
+
+CREATE TABLE product (
+	product_id varchar(7) NOT NULL, 
+	product_name varchar(60) NOT NULL, 
+	stock_per_product int , 
+	product_price int NOT NULL, 
+	PRIMARY KEY (product_id));	
+
+CREATE TABLE warehouse (
+	warehouse_id char(4) NOT NULL,
+	name varchar(50) NOT NULL,
+	address char(25) NOT NULL, 
+	PRIMARY KEY (warehouse_id));	
+
+CREATE TABLE order_Details (
+	order_line int NOT NULL, 
+	order_id varchar(7) NOT NULL,
+    product_id varchar(7) NOT NULL,	
+	quantity int NOT NULL,	
+	PRIMARY KEY (order_line,order_id),
+	FOREIGN KEY (product_id) references product on delete set null
+	);
+
+CREATE TABLE fact_warehouse (
+	product_id varchar(7) NOT NULL, 
+	warehouse_id char(4) NOT NULL, 
+	warehouse_stock int, 
+	PRIMARY KEY (warehouse_id, product_id),
+	FOREIGN KEY (warehouse_id) references warehouse on delete cascade,
+	FOREIGN KEY (product_id) references product on delete set null
+	);
+
+CREATE TABLE payment (
+	payment_id varchar(7) NOT NULL,
+	order_id varchar(7) NOT NULL, 	
+	payment_date date NOT NULL, 
+	PRIMARY KEY (payment_id, order_id),
+	FOREIGN KEY (order_id) references orders on delete cascade
+	);
+	
+	
+update orders  
+set total_cost = tmpcost 
+FROM (select TMP.order_id as tmpid,sum(TMP.product_cost) as tmpcost FROM
+(select OD.order_id,OD.quantity,PR.product_price,OD.quantity*PR.product_price as product_cost
+FROM order_details as OD 
+left join product as PR 
+on OD.product_id=PR.product_id) as TMP
+GROUP BY TMP.order_id )  TMP1
+where order_id = tmpid;

@@ -1,0 +1,21 @@
+country_id ,country_name,currency
+AFG,Austria,euro
+BEL,Belgium,euro
+CYP,Cyprus,euro
+EST,Estonia,euro
+FIN,Finland,euro
+FRA,France,euro
+DEU,Germany,euro
+GRC,Greece,euro
+IRL,Ireland,euro
+ITA,Italy,euro
+LVA,Latvia,euro
+LTU,Lithuania,euro
+LUX,Luxembourg,euro
+MLT,Malta,euro
+NLD,the Netherlands,euro
+PRT,Portugal,euro
+SVK,Slovakia,euro
+SVN,Slovenia,euro
+ESP,Spain,euro
+USA,United State,dollar

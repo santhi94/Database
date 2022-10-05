@@ -1,0 +1,4 @@
+delivery_method_id,description,delivery_day,delivery_cost
+DEL1,standar ,6,5
+DEL2,express ,4,8
+DEL3,myexpress,1,15

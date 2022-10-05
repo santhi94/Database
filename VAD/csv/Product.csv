@@ -1,0 +1,31 @@
+product_id,product_name,stock_per_product ,product_price
+PRD1,Televisions,48,437
+PRD2,Netflix,92,402
+PRD3,Decoders,27,418
+PRD4,Media Players,48,377
+PRD5,TV stands,29,273
+PRD6,Cables,36,307
+PRD7,Drones,100,126
+PRD8,Robots,16,301
+PRD9,Remote Control Accessories,52,96
+PRD10,Instant,85,124
+PRD11,Refrigerators and freezers,87,290
+PRD12,Refrigerators,58,136
+PRD13,Wardrobes & Side by Side,85,492
+PRD14,Freezers,70,92
+PRD15,Wine maintainers,81,56
+PRD16,Coffee makers,14,453
+PRD17,Accessories,92,323
+PRD18,Pantries,90,188
+PRD19,Professional Ovens,94,151
+PRD20,Ovens,42,500
+PRD21,Outbreaks,38,444
+PRD22,Wall Mounting Set,28,174
+PRD23,Microwave ovens,31,98
+PRD24,Coffee & Beverages,74,65
+PRD25,Kettles,39,187
+PRD26,Squeezers,80,469
+PRD27,Juicers,81,10
+PRD28,Desalination & Cleaning,18,28
+PRD29,Foams & Grinding Mills,59,265
+PRD30,Vacuum cleaners,97,294
